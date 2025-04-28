@@ -1,0 +1,175 @@
+baseURL = "/"
+title = "Hugo Theme Tailwind Example Site" # Hoặc tên trang của bạn
+copyright = "Xiaoliang Wang" # Hoặc tên bạn
+languageCode = "en"
+defaultContentLanguage = "en"
+enableInlineShortcodes = true
+ignoreErrors = ["error-remote-getjson"]
+# enableGitInfo = false # Bạn có thể bật nếu dùng Git
+
+paginate = 3 # Cấu hình phân trang
+
+# --- Định nghĩa Output Formats và Media Types ---
+[outputs]
+  home = ["HTML", "RSS", "MANIFEST"] # Thêm MANIFEST cho trang chủ
+  page = ["HTML"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[outputFormats]
+  [outputFormats.MANIFEST]
+    mediaType = "application/manifest+json"
+    baseName = "manifest"  # Tên file sẽ là manifest.json
+    isPlainText = false
+    notAlternative = true
+
+[mediaTypes]
+  [mediaTypes."application/manifest+json"]
+    suffixes = ["json"]
+
+# --- Cấu hình Markup ---
+[markup]
+  [markup.highlight]
+    noClasses = false # Cho phép dùng CSS class để highlight
+  [markup.goldmark.renderer]
+    unsafe = true # Cần thiết cho HTML nhúng hoặc một số shortcodes phức tạp
+
+# --- Cấu hình Taxonomies ---
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+  series = "series"
+
+# --- Cấu hình Privacy ---
+[privacy]
+  [privacy.vimeo]
+    disabled = false
+    simple = true
+  [privacy.youtube]
+    disabled = false
+    privacyEnhanced = true
+  # Hugo sử dụng internal template 'twitter' cho X
+  [privacy.twitter]
+    disableInlineCSS = true
+  [privacy.instagram]
+    disableInlineCSS = true
+
+# --- Tham số tùy chỉnh cho Theme (params) ---
+[params]
+  keywords = "hugo, tailwind, tailwindcss, hugo theme, hugo theme tailwind"
+  subtitle = "Example site for hugo-theme-tailwind"
+  contentTypeName = "post" # Thư mục chứa bài viết chính (ví dụ: content/post/)
+  jsonLD = true           # Bật JSON-LD Schema
+  showAuthor = true       # Hiển thị tên tác giả
+  showReadingTime = true  # Hiển thị thời gian đọc
+  # Toc = true            # Bật ToC mặc định cho mọi bài viết (có thể ghi đè trong front matter)
+
+  [params.author]
+    name = "Xiaoliang Wang"
+    email = "user@example.com" # Thay bằng email của bạn nếu muốn
+
+  [params.header]
+    logo = "logo.png" # Đường dẫn tương đối từ thư mục assets (ví dụ: assets/logo.png)
+    title = "Hugo Theme Tailwind" # Tiêu đề hiển thị trên header
+    # sticky = false # Đặt là true nếu muốn header dính khi cuộn
+
+  [params.footer]
+    since = 2022      # Năm bắt đầu trang web (để hiển thị copyright)
+    poweredby = true  # Hiển thị "Powered by Hugo & Tailwind"
+
+  [params.giscus] # Cấu hình bình luận Giscus (nếu dùng)
+    enabled = false # Đặt là true để bật
+    # repo = "tomowang/hugo-theme-tailwind"
+    # repoID = "R_kgDOKjVJHA"
+    # category = "Announcements"
+    # categoryID = "DIC_kwDOKjVJHM4CafqS"
+    # mapping = "pathname"
+    # strict = "0"
+    # reactionsEnabled = "1"
+    # emitMetadata = "0"
+    # inputPosition = "bottom"
+    # lang = "en"
+
+  [params.social_media] # Liên kết mạng xã hội ở footer
+    [[params.social_media.items]]
+      enabled = true
+      title = 'Facebook'
+      icon = 'brand-facebook' # Tên file icon trong assets/icons/ (không có .svg)
+      link = 'https://www.facebook.com/'
+    [[params.social_media.items]]
+      enabled = true
+      title = 'X' # Hoặc Twitter
+      icon = 'brand-x' # Hoặc brand-twitter
+      link = 'https://x.com/tomo_wang_'
+    [[params.social_media.items]]
+      enabled = true
+      title = 'Instagram'
+      icon = 'brand-instagram'
+      link = 'https://www.instagram.com/'
+    [[params.social_media.items]]
+      enabled = true
+      title = 'LinkedIn'
+      icon = 'brand-linkedin'
+      link = 'https://www.linkedin.com/'
+    [[params.social_media.items]]
+      enabled = true
+      title = 'Github'
+      icon = 'brand-github'
+      link = 'https://github.com/tomowang'
+    [[params.social_media.items]]
+      enabled = true
+      title = 'Bluesky'
+      icon = 'brand-bluesky'
+      link = 'https://bsky.app/'
+
+  [params.pwa] # Cấu hình Progressive Web App
+    enabled = true
+    icon = "logo.png" # File icon trong thư mục assets/
+    icon_sizes = [192, 512]
+    [params.pwa.manifest] # Dữ liệu bổ sung cho manifest.json
+      description = "Example site for hugo-theme-tailwind"
+      # short_name = "HugoTailwind"
+      # theme_color = "#ffffff"
+      # background_color = "#ffffff"
+
+  [params.taxonomies] # Icon cho các trang taxonomy list
+    [params.taxonomies.icons]
+      tags = "tags"        # assets/icons/tags.svg
+      categories = "category-2" # assets/icons/category-2.svg
+      series = "hash"       # assets/icons/hash.svg
+
+  # [params.search] # Cấu hình cho trang tìm kiếm (nếu cần)
+  #   summaryInclude = 180       # Số ký tự tóm tắt
+  #   minMatchCharLength = 2     # Số ký tự tối thiểu để khớp
+  #   threshold = 0.3            # Độ nhạy tìm kiếm (0.0 = chính xác, 1.0 = rất lỏng lẻo)
+
+# --- Cấu hình Ngôn ngữ & Menu ---
+[languages]
+  [languages.en]
+    languageCode = 'en-US'
+    languageDirection = 'ltr'
+    languageName = 'English'
+    weight = 1
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+        identifier = "post"
+        name = "Post"
+        pageRef = "post" # Liên kết đến section /post/
+        weight = 10
+      [[languages.en.menu.main]]
+        identifier = "about"
+        name = "About"
+        pageRef = "about" # Liên kết đến section /about/
+        weight = 20
+
+# --- Cấu hình Services ---
+[services]
+  [services.googleAnalytics]
+    ID = "" # Điền Google Analytics ID của bạn vào đây nếu dùng
+  [services.disqus]
+    shortname = '' # Điền Disqus shortname của bạn vào đây nếu dùng
+  # [services.instagram] # Cấu hình nếu dùng Instagram Feed của Hugo
+  #   accessToken = "YOUR_INSTAGRAM_ACCESS_TOKEN"
+  # [services.twitter] # Đã cấu hình trong [privacy]
+  #   # Không cần key nếu chỉ dùng simple embedding
