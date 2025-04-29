@@ -1,51 +1,43 @@
+{{/* layouts/partials/block/image.html */}}
 {{- $alt := .Title -}}
+{{- $imagePath := .Params.image -}}
 
-{{- $respSizes := slice "960" "1600" -}}
-{{- $hint := "photo" -}}
-{{- $filter := "box" -}}
-{{- if .Params.image -}}
-  {{- $dest := .Params.image | safeURL -}}
-  {{- $dest = path.Join (path.Dir $dest) (path.Base $dest) -}}
+{{- if $imagePath -}}
+  {{- $src := resources.Get $imagePath -}}
+  {{- if $src }}
+    {{- $respSizes := slice "960" "1600" -}} {{/* Kích thước cho ảnh feature */}}
+    {{- $hint := "photo" -}}
+    {{- $filter := "box" -}}
+    {{- $cssClass := "w-full object-cover h-36 md:h-48 xl:h-60" -}} {{/* Class CSS cho ảnh feature */}}
 
-  {{- with .Resources.Get $dest -}}
-  {{- if eq .MediaType.SubType "svg" -}}
-  <figure>
-    <img class="w-full object-cover h-36 md:h-48 xl:h-60" src="{{ .RelPermalink }}"
-      alt="{{ $alt }}" title="{{ $alt }}"
-      loading="lazy"
-    >
-  </figure>
+    {{- if eq $src.MediaType.SubType "svg" -}}
+      <figure>
+        <img class="{{ $cssClass }}" src="{{ $src.RelPermalink }}"
+          alt="{{ $alt }}" title="{{ $alt }}"
+          loading="lazy"
+        >
+      </figure>
+    {{- else -}}
+      {{- $dataSzes := "(min-width: 1024px) 100vw, 50vw" -}} {{/* Điều chỉnh sizes nếu cần */}}
+      {{- $actualImg := $src.Resize (printf "%dx jpg %s" (index $respSizes 0 | default 960) $filter) -}} {{/* Lấy kích thước đầu tiên */}}
+      <picture>
+        <source type="image/webp" srcset="
+        {{- range $i, $e := $respSizes -}}
+          {{- if ge $src.Width . -}}
+            {{- if $i }}, {{ end -}}{{- ($src.Resize (printf "%dx webp %s %s" . $hint $filter) ).RelPermalink }} {{ . }}w
+          {{- end -}}
+        {{- end -}}" sizes="{{ $dataSzes }}" />
+        <source type="{{ $src.MediaType.Type }}" srcset="
+        {{- range $i, $e := $respSizes -}}
+          {{- if ge $src.Width . -}}
+            {{- if $i }}, {{ end -}}{{- ($src.Resize (printf "%dx %s %s" . $filter) ).RelPermalink }} {{ . }}w
+          {{- end -}}
+        {{- end -}}" sizes="{{ $dataSzes }}" />
+        <img class="{{ $cssClass }}" src="{{ $actualImg.RelPermalink }}" width="{{ $actualImg.Width }}" height="{{ $actualImg.Height }}" alt="{{ $alt }}" title="{{ $alt }}" loading="lazy" />
+      </picture>
+    {{- end -}}
   {{- else -}}
-  {{- $src := . -}}
-  {{- $dataSzes := "(min-width: 1024px) 100vw, 50vw" -}}
-  {{- $actualImg := $src.Resize (print "640x jpg " $filter) -}}
-  <picture>
-    <source type="image/webp" srcset="
-    {{- with $respSizes -}}
-      {{- range $i, $e := . -}}
-        {{- if ge $src.Width . -}}
-          {{- if $i }}, {{ end -}}{{- ($src.Resize (print . "x webp " $hint " " $filter) ).RelPermalink }} {{ . }}w
-        {{- end -}}
-      {{- end -}}
-    {{- end -}}" sizes="{{ $dataSzes }}" />
-    <source type="image/jpeg" srcset="
-    {{- with $respSizes -}}
-      {{- range $i, $e := . -}}
-        {{- if ge $src.Width . -}}
-          {{- if $i }}, {{ end -}}{{- ($src.Resize (print . "x jpg " $filter) ).RelPermalink }} {{ . }}w
-        {{- end -}}
-      {{- end -}}
-    {{- end -}}" sizes="{{ $dataSzes }}" />
-    <img class="w-full object-cover h-36 md:h-48 xl:h-60" src="{{ $actualImg.RelPermalink }}" width="{{ $src.Width }}" height="{{ $src.Height }}" alt="{{ $alt }}" title="{{ $alt }}" loading="lazy" />
-  </picture>
-  {{- end -}}
-  <!-- or otherwise simply load the URL -->
-  {{- else -}}
-  <figure>
-    <img class="w-full object-cover h-36 md:h-48 xl:h-60" src="{{ .Params.image | safeURL }}"
-      alt="{{ $alt }}" title="{{ $alt }}"
-      loading="lazy"
-    >
-  </figure>
+    {{- warnf "[block/image.html] Image resource not found in assets for page '%s': %s" .RelPermalink $imagePath -}}
+    {{/* Có thể hiển thị placeholder ở đây nếu muốn */}}
   {{- end -}}
 {{- end -}}

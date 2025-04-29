@@ -7,7 +7,8 @@ enableInlineShortcodes = true
 ignoreErrors = ["error-remote-getjson"]
 # enableGitInfo = false # Bạn có thể bật nếu dùng Git
 
-paginate = 3 # Cấu hình phân trang
+[pagination]
+  pagerSize = 12
 
 # --- Định nghĩa Output Formats và Media Types ---
 [outputs]

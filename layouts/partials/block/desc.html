@@ -1,11 +1,16 @@
+{{/* layouts/partials/block/desc.html */}}
+{{ $description := "" }}
 {{ with .Description }}
-  <div class="my-4 text-large text-slate-600 dark:text-slate-300">
-    {{ . | $.Page.RenderString }}
-  </div>
+  {{ $description = . }}
 {{ else }}
   {{ with .Summary }}
-  <div class="my-4 text-large text-slate-600 dark:text-slate-300">
-    {{ . | $.Page.RenderString }}
-  </div>
+    {{ $description = . }}
   {{ end }}
+{{ end }}
+
+{{ if $description }}
+  <div class="my-4 text-large text-slate-600 dark:text-slate-300">
+    {{/* --- FIX: Use plainify to remove HTML tags --- */}}
+    {{ $description | plainify | safeHTML }}
+  </div>
 {{ end }}
